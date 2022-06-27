@@ -1,0 +1,194 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="BirlesikOdemeModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="customer">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NAME" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="SURNAME" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="BIRTHDATE" Type="date" />
+          <Property Name="IDENTITYNO" Type="nvarchar" MaxLength="11" />
+          <Property Name="IDENTITYNOVERIFIED" Type="char" MaxLength="1" Nullable="false" />
+          <Property Name="MAIL" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="EKLZMN" Type="date" />
+          <Property Name="EKLKLN" Type="nvarchar" MaxLength="50" />
+          <Property Name="GNCZMN" Type="date" />
+          <Property Name="GNCKLN" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'BirlesikOdeme.dbo.transactions' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="transactions">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="CUSTOMERID" />
+            <PropertyRef Name="ORDERID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="CUSTOMERID" Type="int" Nullable="false" />
+          <Property Name="ORDERID" Type="int" Nullable="false" />
+          <Property Name="TYPEID" Type="int" />
+          <Property Name="AMOUNT" Type="numeric" Precision="18" Scale="0" />
+          <Property Name="CARDPAN" Type="varchar" MaxLength="16" />
+          <Property Name="RESPONSECODE" Type="varchar" MaxLength="50" />
+          <Property Name="RESPONSEMESSAGE" Type="nvarchar(max)" />
+          <Property Name="STATUSID" Type="int" />
+        </EntityType>
+        <Association Name="FK_TRANSACTIONID_CUSTOMERID">
+          <End Role="customer" Type="Self.customer" Multiplicity="1" />
+          <End Role="transactions" Type="Self.transactions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="customer">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="transactions">
+              <PropertyRef Name="CUSTOMERID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="BirlesikOdemeModelStoreContainer">
+          <EntitySet Name="customer" EntityType="Self.customer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="transactions" EntityType="Self.transactions" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [transactions].[ID] AS [ID], 
+    [transactions].[CUSTOMERID] AS [CUSTOMERID], 
+    [transactions].[ORDERID] AS [ORDERID], 
+    [transactions].[TYPEID] AS [TYPEID], 
+    [transactions].[AMOUNT] AS [AMOUNT], 
+    [transactions].[CARDPAN] AS [CARDPAN], 
+    [transactions].[RESPONSECODE] AS [RESPONSECODE], 
+    [transactions].[RESPONSEMESSAGE] AS [RESPONSEMESSAGE], 
+    [transactions].[STATUSID] AS [STATUSID]
+    FROM [dbo].[transactions] AS [transactions]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_TRANSACTIONID_CUSTOMERID" Association="Self.FK_TRANSACTIONID_CUSTOMERID">
+            <End Role="customer" EntitySet="customer" />
+            <End Role="transactions" EntitySet="transactions" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="BirlesikOdemeModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="customer">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="SURNAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="BIRTHDATE" Type="DateTime" Precision="0" />
+          <Property Name="IDENTITYNO" Type="String" MaxLength="11" FixedLength="false" Unicode="true" />
+          <Property Name="IDENTITYNOVERIFIED" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="MAIL" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="EKLZMN" Type="DateTime" Precision="0" />
+          <Property Name="EKLKLN" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="GNCZMN" Type="DateTime" Precision="0" />
+          <Property Name="GNCKLN" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="transactions" Relationship="Self.FK_TRANSACTIONID_CUSTOMERID" FromRole="customer" ToRole="transactions" />
+        </EntityType>
+        <EntityType Name="transactions">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="CUSTOMERID" />
+            <PropertyRef Name="ORDERID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="CUSTOMERID" Type="Int32" Nullable="false" />
+          <Property Name="ORDERID" Type="Int32" Nullable="false" />
+          <Property Name="TYPEID" Type="Int32" />
+          <Property Name="AMOUNT" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="CARDPAN" Type="String" MaxLength="16" FixedLength="false" Unicode="false" />
+          <Property Name="RESPONSECODE" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="RESPONSEMESSAGE" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="STATUSID" Type="Int32" />
+          <NavigationProperty Name="customer" Relationship="Self.FK_TRANSACTIONID_CUSTOMERID" FromRole="transactions" ToRole="customer" />
+        </EntityType>
+        <Association Name="FK_TRANSACTIONID_CUSTOMERID">
+          <End Role="customer" Type="Self.customer" Multiplicity="1" />
+          <End Role="transactions" Type="Self.transactions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="customer">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="transactions">
+              <PropertyRef Name="CUSTOMERID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DatabaseModelEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="customer" EntityType="Self.customer" />
+          <EntitySet Name="transactions" EntityType="Self.transactions" />
+          <AssociationSet Name="FK_TRANSACTIONID_CUSTOMERID" Association="Self.FK_TRANSACTIONID_CUSTOMERID">
+            <End Role="customer" EntitySet="customer" />
+            <End Role="transactions" EntitySet="transactions" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="BirlesikOdemeModelStoreContainer" CdmEntityContainer="DatabaseModelEntities">
+          <EntitySetMapping Name="customer">
+            <EntityTypeMapping TypeName="BirlesikOdemeModel.customer">
+              <MappingFragment StoreEntitySet="customer">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="NAME" ColumnName="NAME" />
+                <ScalarProperty Name="SURNAME" ColumnName="SURNAME" />
+                <ScalarProperty Name="BIRTHDATE" ColumnName="BIRTHDATE" />
+                <ScalarProperty Name="IDENTITYNO" ColumnName="IDENTITYNO" />
+                <ScalarProperty Name="IDENTITYNOVERIFIED" ColumnName="IDENTITYNOVERIFIED" />
+                <ScalarProperty Name="MAIL" ColumnName="MAIL" />
+                <ScalarProperty Name="EKLZMN" ColumnName="EKLZMN" />
+                <ScalarProperty Name="EKLKLN" ColumnName="EKLKLN" />
+                <ScalarProperty Name="GNCZMN" ColumnName="GNCZMN" />
+                <ScalarProperty Name="GNCKLN" ColumnName="GNCKLN" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="transactions">
+            <EntityTypeMapping TypeName="BirlesikOdemeModel.transactions">
+              <MappingFragment StoreEntitySet="transactions">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="CUSTOMERID" ColumnName="CUSTOMERID" />
+                <ScalarProperty Name="ORDERID" ColumnName="ORDERID" />
+                <ScalarProperty Name="TYPEID" ColumnName="TYPEID" />
+                <ScalarProperty Name="AMOUNT" ColumnName="AMOUNT" />
+                <ScalarProperty Name="CARDPAN" ColumnName="CARDPAN" />
+                <ScalarProperty Name="RESPONSECODE" ColumnName="RESPONSECODE" />
+                <ScalarProperty Name="RESPONSEMESSAGE" ColumnName="RESPONSEMESSAGE" />
+                <ScalarProperty Name="STATUSID" ColumnName="STATUSID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
